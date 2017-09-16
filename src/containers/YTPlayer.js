@@ -16,7 +16,6 @@ const loadIframePlayer = () => {
 class YTPlayer extends Component {
     constructor (props) {
         super(props)
-        this.getVideoTime = this.getVideoTime.bind(this)
         this.player
         window.onYouTubeIframeAPIReady = () => {            
             this.player = new window.YT.Player('player', {
@@ -38,10 +37,6 @@ class YTPlayer extends Component {
         }
     }
 
-    getVideoTime() {
-        return (this.player.getCurrentTime() / this.player.getDuration()) * 100
-    }
-
     componentDidMount() {
         loadIframePlayer()
     }
@@ -50,7 +45,7 @@ class YTPlayer extends Component {
         return (
             <div>
                 <div id="player" />
-                <TimeHandlerContainer getCurrentTime={this.getVideoTime} />
+                <TimeHandlerContainer />
             </div>
         )
     }
