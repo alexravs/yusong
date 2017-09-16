@@ -1,0 +1,1 @@
+export const getVideoTimeInPercent = (state) => (state.YTPlayer.current / state.YTPlayer.total) * 100
