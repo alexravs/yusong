@@ -14,7 +14,7 @@ const Filled = styled.div`
 
 export default ({ percent }) => (
   <Container>
-    <Filled percent={percent} />
+    <Filled onClick={(e) => console.log(e.pageX)} percent={percent} />
   </Container>
 )
 

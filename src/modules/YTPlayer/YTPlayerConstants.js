@@ -1,2 +1,4 @@
 export const YTPLAYER_FETCH_SUCCESS = 'YTPLAYER_FETCH_SUCCESS'
 export const SET_TIME = 'SET_TIME'
+export const SET_TIMER_ID = 'SET_TIMER_ID'
+export const CLEAR_TIMER_ID = 'CLEAR_TIMER_ID'

@@ -2,9 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import TimeHandlerContainer from './TimeHandlerContainer'
-import { YTPlayerFetchSuccess, setTime } from '../modules/YTPlayer/YTPlayerActions'
+import { YTPlayerFetchSuccess, setTime, setTimerID, clearTimerID } from '../modules/YTPlayer/YTPlayerActions'
 
 const IFRAME_API = "https://www.youtube.com/iframe_api"
+
+const VIDEO_STATE = {
+    started: 1
+}
 
 const loadIframePlayer = () => {
     const tag = document.createElement('script')
@@ -25,12 +29,44 @@ class YTPlayer extends Component {
                 events: {
                     onReady: () => {
                         this.props.YTPlayerFetchSucess()
-                        window.setInterval(() => {
-                            this.props.setTime({
-                                current: this.player.getCurrentTime(),
-                                total: this.player.getDuration()
+                        // window.setInterval(() => {
+                        //     this.props.setTime({
+                        //         current: this.player.getCurrentTime(),
+                        //         total: this.player.getDuration()
+                        //     })
+                        //   }, 250)
+                    },
+                    onStateChange: (e) => { 
+                        //console.log("EN MEMOIRE TEMPON", e) 
+                        if (e.data === 3) console.log("EN MEMOIRE TEMPON")
+                        if (e.data === 2) console.log("EN PAUSE")
+                            if (e.data === 1) console.log("EN LECTURE") 
+                        // -1 : non démarré
+                        // 0 : arrêté
+                        // 1 : en lecture
+                        // 2 : en pause
+                        // 3 : en mémoire tampon
+                        // 5 : en file d'attente
+                        const pausedOrStopped = this.player.getPlayerState() === 2
+                        if (e.data === VIDEO_STATE.started || (e.data === 3)) {
+                            const timerID = window.setInterval(() => {
+                                this.props.setTime({
+                                    current: this.player.getCurrentTime(),
+                                    total: this.player.getDuration()
+                                })
+                            }, 250)
+                            console.log('timerid: ', timerID)
+                            this.props.setTimerID(timerID)
+                        }
+
+                        if (e.data === 0 || e.data === 2) {
+                            console.log("this.props.timerID: ", this.props.timerID)
+                            this.props.timerID.forEach((id) => {
+                                clearInterval(id)
                             })
-                          }, 250)
+                            this.props.clearTimerID()
+                        }
+
                     }
                 }
             })            
@@ -51,9 +87,15 @@ class YTPlayer extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    YTPlayerFetchSucess: () => dispatch(YTPlayerFetchSuccess()),
-    setTime: ({ current, total }) => dispatch(setTime({ current, total }))
+const mapStateToProps = (state) => ({
+    timerID: state.YTPlayer.timerID
 })
 
-export default connect(null, mapDispatchToProps)(YTPlayer)
+const mapDispatchToProps = (dispatch) => ({
+    YTPlayerFetchSucess: () => dispatch(YTPlayerFetchSuccess()),
+    setTime: ({ current, total }) => dispatch(setTime({ current, total })),
+    setTimerID: (timerID) => dispatch(setTimerID(timerID)),
+    clearTimerID: () => dispatch(clearTimerID())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(YTPlayer)

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import { YTPLAYER_FETCH_SUCCESS, SET_TIME } from './YTPlayerConstants'
+import { YTPLAYER_FETCH_SUCCESS, SET_TIME, SET_TIMER_ID, CLEAR_TIMER_ID } from './YTPlayerConstants'
 
 const ready = (state = false, action) => {
   switch (action.type) {
@@ -29,8 +29,20 @@ const total = (state = 0, action) => {
   }
 }
 
+const timerID = (state = [], action) => {
+  switch (action.type) {
+    case SET_TIMER_ID:
+      return state.concat(action.timerID)
+    case CLEAR_TIMER_ID:
+      return []
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   ready,
   current,
-  total
+  total,
+  timerID
 })
