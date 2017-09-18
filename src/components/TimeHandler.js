@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -12,9 +12,22 @@ const Filled = styled.div`
   background: red;
 `
 
-export default ({ percent }) => (
-  <Container>
-    <Filled onClick={(e) => console.log(e.pageX)} percent={percent} />
-  </Container>
-)
+class TimeHandler extends Component {
+  constructor(props) {
+    super(props)
+  }
 
+  render() {
+    return (
+      <Container>
+        <Filled
+          innerRef={fillingBar => {this.fillingBar = fillingBar}}
+          onMouseUp={(e) => console.log(this.fillingBar.getBoundingClientRect())}
+          percent={this.props.percent}
+        />
+      </Container>
+    )
+  }
+}
+
+export default TimeHandler
