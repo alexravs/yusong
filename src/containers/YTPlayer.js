@@ -72,7 +72,10 @@ class YTPlayer extends Component {
     }
 
     handleTimeChange(timeInSecond) {
-        this.player.seekTo(timeInSecond)
+        console.log(timeInSecond)
+        this.player.j.currentTime = timeInSecond
+        console.log(this.player)
+        //this.player.seekTo(timeInSecond)
     }
 
     render() {

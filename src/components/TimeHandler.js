@@ -15,6 +15,10 @@ const Filled = styled.div`
 class TimeHandler extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      fakeTime: null
+    }
   }
 
   render() {
@@ -28,13 +32,17 @@ class TimeHandler extends Component {
         }}
         onMouseMove={(e) => {
           const percent = e.clientX / this.containerBar.getBoundingClientRect().right * 100
-          const timeInSecond = (this.props.totalTime / 100) * percent
-          this.props.onTimeChange(timeInSecond)
+          //const timeInSecond = (this.props.totalTime / 100) * percent
+          {/* console.log(timeInSecond) */}
+          //this.props.onTimeChange(timeInSecond)
+          this.setState({
+            fakeTime: percent
+          })
         }}
       >
         <Filled
           innerRef={bar => {this.fillingBar = bar}}
-          percent={this.props.percent}
+          percent={this.state.fakeTime || this.props.percent}
         />
       </Container>
     )
