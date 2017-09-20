@@ -21,6 +21,7 @@ class YTPlayer extends Component {
     constructor (props) {
         super(props)
         this.player
+        this.handleTimeChange = this.handleTimeChange.bind(this)
         window.onYouTubeIframeAPIReady = () => {            
             this.player = new window.YT.Player('player', {
                 height: '360',
@@ -29,18 +30,8 @@ class YTPlayer extends Component {
                 events: {
                     onReady: () => {
                         this.props.YTPlayerFetchSucess()
-                        // window.setInterval(() => {
-                        //     this.props.setTime({
-                        //         current: this.player.getCurrentTime(),
-                        //         total: this.player.getDuration()
-                        //     })
-                        //   }, 250)
                     },
                     onStateChange: (e) => { 
-                        //console.log("EN MEMOIRE TEMPON", e) 
-                        if (e.data === 3) console.log("EN MEMOIRE TEMPON")
-                        if (e.data === 2) console.log("EN PAUSE")
-                            if (e.data === 1) console.log("EN LECTURE") 
                         // -1 : non démarré
                         // 0 : arrêté
                         // 1 : en lecture
@@ -55,12 +46,10 @@ class YTPlayer extends Component {
                                     total: this.player.getDuration()
                                 })
                             }, 250)
-                            console.log('timerid: ', timerID)
                             this.props.setTimerID(timerID)
                         }
 
                         if (e.data === 0 || e.data === 2) {
-                            console.log("this.props.timerID: ", this.props.timerID)
                             this.props.timerID.forEach((id) => {
                                 clearInterval(id)
                             })
@@ -77,11 +66,15 @@ class YTPlayer extends Component {
         loadIframePlayer()
     }
 
+    handleTimeChange(timeInSecond) {
+        this.player.seekTo(timeInSecond)
+    }
+
     render() {
         return (
             <div>
                 <div id="player" />
-                <TimeHandlerContainer />
+                <TimeHandlerContainer onTimeChange={this.handleTimeChange} />
             </div>
         )
     }

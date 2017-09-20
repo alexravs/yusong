@@ -19,10 +19,16 @@ class TimeHandler extends Component {
 
   render() {
     return (
-      <Container>
+      <Container
+        innerRef={bar => {this.containerBar = bar}}
+        onClick={(e) => {
+          const percent = e.clientX / this.containerBar.getBoundingClientRect().right * 100
+          const timeInSecond = (this.props.totalTime / 100) * percent
+          this.props.onTimeChange(timeInSecond)
+        }}
+      >
         <Filled
-          innerRef={fillingBar => {this.fillingBar = fillingBar}}
-          onMouseUp={(e) => console.log(this.fillingBar.getBoundingClientRect())}
+          innerRef={bar => {this.fillingBar = bar}}
           percent={this.props.percent}
         />
       </Container>
