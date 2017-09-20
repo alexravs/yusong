@@ -21,6 +21,7 @@ class YTPlayer extends Component {
     constructor (props) {
         super(props)
         this.player
+        this.state = { current: 0, total: 0 }
         this.handleTimeChange = this.handleTimeChange.bind(this)
         window.onYouTubeIframeAPIReady = () => {            
             this.player = new window.YT.Player('player', {
@@ -41,20 +42,24 @@ class YTPlayer extends Component {
                         const pausedOrStopped = this.player.getPlayerState() === 2
                         if (e.data === VIDEO_STATE.started || (e.data === 3)) {
                             const timerID = window.setInterval(() => {
-                                this.props.setTime({
+                                // this.props.setTime({
+                                //     current: this.player.getCurrentTime(),
+                                //     total: this.player.getDuration()
+                                // })
+                                this.setState({
                                     current: this.player.getCurrentTime(),
                                     total: this.player.getDuration()
                                 })
                             }, 250)
-                            this.props.setTimerID(timerID)
+                            //this.props.setTimerID(timerID)
                         }
 
-                        if (e.data === 0 || e.data === 2) {
-                            this.props.timerID.forEach((id) => {
-                                clearInterval(id)
-                            })
-                            this.props.clearTimerID()
-                        }
+                        // if (e.data === 0 || e.data === 2) {
+                        //     this.props.timerID.forEach((id) => {
+                        //         clearInterval(id)
+                        //     })
+                        //     this.props.clearTimerID()
+                        // }
 
                     }
                 }
@@ -74,7 +79,7 @@ class YTPlayer extends Component {
         return (
             <div>
                 <div id="player" />
-                <TimeHandlerContainer onTimeChange={this.handleTimeChange} />
+                <TimeHandlerContainer percent={this.state.current / this.state.total * 100} onTimeChange={this.handleTimeChange} totalTime={this.state.total} />
             </div>
         )
     }

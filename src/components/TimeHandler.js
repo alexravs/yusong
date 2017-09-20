@@ -26,6 +26,11 @@ class TimeHandler extends Component {
           const timeInSecond = (this.props.totalTime / 100) * percent
           this.props.onTimeChange(timeInSecond)
         }}
+        onMouseMove={(e) => {
+          const percent = e.clientX / this.containerBar.getBoundingClientRect().right * 100
+          const timeInSecond = (this.props.totalTime / 100) * percent
+          this.props.onTimeChange(timeInSecond)
+        }}
       >
         <Filled
           innerRef={bar => {this.fillingBar = bar}}
