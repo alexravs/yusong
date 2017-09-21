@@ -17,7 +17,45 @@ class TimeHandler extends Component {
     super(props)
 
     this.state = {
-      fakeTime: null
+      fakeTime: null,
+      mouseDown: false,
+    }
+  }
+
+  getTimeInSeconds = () => {
+    return (this.props.totalTime / 100) * this.state.fakeTime
+  }
+
+  handleMouseDown = () => {
+    this.setState({
+      mouseDown: true
+    })
+  }
+
+  handleMouseUp = () => {
+    this.setState({
+      mouseDown: false
+    })
+    
+    this.props.onTimeChange(this.getTimeInSeconds())
+    console.log("up")
+    
+  }
+
+  handleMouseOut = () => {
+    this.setState({
+      mouseDown: false
+    })
+    this.props.onTimeChange(this.getTimeInSeconds())
+  }
+
+  handleMouseMove = (e) => {
+    if (this.state.mouseDown) {
+      const percent = e.clientX / this.containerBar.getBoundingClientRect().right * 100
+
+      this.setState({
+        fakeTime: percent
+      })            
     }
   }
 
@@ -25,20 +63,9 @@ class TimeHandler extends Component {
     return (
       <Container
         innerRef={bar => {this.containerBar = bar}}
-        onClick={(e) => {
-          const percent = e.clientX / this.containerBar.getBoundingClientRect().right * 100
-          const timeInSecond = (this.props.totalTime / 100) * percent
-          this.props.onTimeChange(timeInSecond)
-        }}
-        onMouseMove={(e) => {
-          const percent = e.clientX / this.containerBar.getBoundingClientRect().right * 100
-          //const timeInSecond = (this.props.totalTime / 100) * percent
-          {/* console.log(timeInSecond) */}
-          //this.props.onTimeChange(timeInSecond)
-          this.setState({
-            fakeTime: percent
-          })
-        }}
+        onMouseDown={this.handleMouseDown}
+        onMouseUp={this.handleMouseUp}
+        onMouseMove={this.handleMouseMove}
       >
         <Filled
           innerRef={bar => {this.fillingBar = bar}}
