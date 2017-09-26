@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import ReactOutsideEvent from 'react-outside-event';
 
 const Container = styled.div`
   width: 100%;
@@ -22,6 +23,14 @@ class TimeHandler extends Component {
     }
   }
 
+  onOutsideEvent = (e) => {
+    if (e.type === 'mouseup') {
+      this.handleMouseUp()
+    } else if (e.type === 'mousemove') {
+      this.handleMouseMove(e)
+    }
+  }
+
   getTimeInSeconds = () => {
     return (this.props.totalTime / 100) * this.state.fakeTime
   }
@@ -37,16 +46,7 @@ class TimeHandler extends Component {
       mouseDown: false
     })
     
-    this.props.onTimeChange(this.getTimeInSeconds())
-    console.log("up")
-    
-  }
-
-  handleMouseOut = () => {
-    this.setState({
-      mouseDown: false
-    })
-    this.props.onTimeChange(this.getTimeInSeconds())
+    this.props.onTimeChange(this.getTimeInSeconds())    
   }
 
   handleMouseMove = (e) => {
@@ -76,4 +76,4 @@ class TimeHandler extends Component {
   }
 }
 
-export default TimeHandler
+export default ReactOutsideEvent(TimeHandler, ['mouseup', 'mousemove'])

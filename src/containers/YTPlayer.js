@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import TimeHandlerContainer from './TimeHandlerContainer'
+import TimeHandler from '../components/TimeHandler'
 import { YTPlayerFetchSuccess, setTime, setTimerID, clearTimerID } from '../modules/YTPlayer/YTPlayerActions'
 
 const IFRAME_API = "https://www.youtube.com/iframe_api"
@@ -80,7 +80,7 @@ class YTPlayer extends Component {
         return (
             <div>
                 <div id="player" />
-                <TimeHandlerContainer percent={this.state.current / this.state.total * 100} onTimeChange={this.handleTimeChange} totalTime={this.state.total} />
+                <TimeHandler percent={this.state.current / this.state.total * 100} onTimeChange={this.handleTimeChange} totalTime={this.state.total} />
             </div>
         )
     }
