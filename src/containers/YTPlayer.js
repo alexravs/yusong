@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import TimeHandler from '../components/TimeHandler'
+import Timer from '../components/Timer'
 import { YTPlayerFetchSuccess, setTime, setTimerID, clearTimerID } from '../modules/YTPlayer/YTPlayerActions'
 
 const IFRAME_API = "https://www.youtube.com/iframe_api"
@@ -72,7 +73,6 @@ class YTPlayer extends Component {
     }
 
     handleTimeChange(timeInSecond) {
-        console.log("hhh", timeInSecond)
         this.player.seekTo(timeInSecond)
     }
 
@@ -81,6 +81,7 @@ class YTPlayer extends Component {
             <div>
                 <div id="player" />
                 <TimeHandler percent={this.state.current / this.state.total * 100} onTimeChange={this.handleTimeChange} totalTime={this.state.total} />
+                <Timer sec={this.state.current} />
             </div>
         )
     }

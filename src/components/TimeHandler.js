@@ -7,8 +7,11 @@ const Container = styled.div`
   height: 15px;
 `
 
-const Filled = styled.div`
-  width: ${props => props.percent}%;
+const Filled = styled.div.attrs({
+  style: props => ({
+    width: `${props.percent}%`,
+  })
+})`
   height: 15px;  
   background: red;
 `
