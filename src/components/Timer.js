@@ -1,15 +1,17 @@
 import React from 'react'
 
 const formatSeconds = (sec) => {
-  var sec_num = parseInt(sec, 10); // don't forget the second param
-  var hours   = Math.floor(sec_num / 3600);
-  var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-  var seconds = sec_num - (hours * 3600) - (minutes * 60);
+  let atLeastAnHour = sec >= 3600,
+      sec_num       = parseInt(sec, 10),
+      hours         = Math.floor(sec_num / 3600),
+      minutes       = Math.floor((sec_num - (hours * 3600)) / 60),
+      seconds       = sec_num - (hours * 3600) - (minutes * 60);
 
   if (hours   < 10) {hours   = "0"+hours;}
   if (minutes < 10) {minutes = "0"+minutes;}
   if (seconds < 10) {seconds = "0"+seconds;}
-  return hours+':'+minutes+':'+seconds;
+
+  return (atLeastAnHour ? `${hours}:` : '') + minutes + ':' + seconds;
 }
 
 export default ({ sec }) => (

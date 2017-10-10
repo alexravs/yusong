@@ -62,17 +62,28 @@ class TimeHandler extends Component {
     }
   }
 
+  handleOnClick = (e) => {
+    const percent = e.clientX / this.containerBar.getBoundingClientRect().right * 100
+
+    this.setState({
+      fakeTime: percent
+    }, () => this.props.onTimeChange(this.getTimeInSeconds()) )   
+  }
+
   render() {
+    console.log("fake time : ", this.props.fakeTime)
+    console.log("show me the percent: ", this.props.percent)
     return (
       <Container
         innerRef={bar => {this.containerBar = bar}}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
         onMouseMove={this.handleMouseMove}
+        onClick={this.handleOnClick}
       >
         <Filled
           innerRef={bar => {this.fillingBar = bar}}
-          percent={this.state.fakeTime || this.props.percent}
+          percent={this.state.fakeTime || this.props.percent || 0}
         />
       </Container>
     )

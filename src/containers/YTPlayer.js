@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import TimeHandler from '../components/TimeHandler'
 import Timer from '../components/Timer'
@@ -18,6 +19,10 @@ const loadIframePlayer = () => {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
 }
 
+const HandlerWrapper = styled.div`
+    display: flex;
+`
+
 class YTPlayer extends Component {
     constructor (props) {
         super(props)
@@ -28,7 +33,7 @@ class YTPlayer extends Component {
             this.player = new window.YT.Player('player', {
                 height: '360',
                 width: '640',
-                videoId: 'M7lc1UVf-VE',
+                videoId: 'UE4xKS-oCtQ',
                 events: {
                     onReady: () => {
                         this.props.YTPlayerFetchSucess()
@@ -75,13 +80,15 @@ class YTPlayer extends Component {
     handleTimeChange(timeInSecond) {
         this.player.seekTo(timeInSecond)
     }
-
     render() {
         return (
             <div>
                 <div id="player" />
-                <TimeHandler percent={this.state.current / this.state.total * 100} onTimeChange={this.handleTimeChange} totalTime={this.state.total} />
-                <Timer sec={this.state.current} />
+                <HandlerWrapper>
+                    <Timer sec={this.state.current} />
+                    <TimeHandler percent={this.state.current / this.state.total * 100} onTimeChange={this.handleTimeChange} totalTime={this.state.total} />
+                    <Timer sec={this.state.total} />
+                </HandlerWrapper>
             </div>
         )
     }
